@@ -13,16 +13,15 @@ public:
     virtual double area() = 0;
     virtual double perimetre() = 0;
 
-    friend std::ostream &operator<<(std::ostream &stream, const Figure &f) {
-        f.print(stream);
-        return stream;
-    }
+    friend std::ostream &operator<<(std::ostream &stream, const Figure &f) ;
 
     virtual Figure &operator=(const Figure &f) = 0;
 
 protected:
     virtual std::ostream &print(std::ostream &stream) const = 0;
 };
+
+inline Figure& Figure::operator = (const Figure& f) = default;
 
 class Circle : public Figure {
 public:
@@ -36,6 +35,7 @@ public:
     }
 
     Circle &operator=(const Figure &f) override {
+        if (this == &f) return *this;
         const Circle &c = dynamic_cast<const Circle &>(f);
         R = c.R;
         return *this;
@@ -48,6 +48,8 @@ public:
     double perimetre() override {
         return 2 * M_PI * R;
     }
+
+    Circle &operator = (const Circle &c) = default;
 
 private:
     double R;
@@ -65,6 +67,7 @@ public:
     }
 
     Rectangle &operator=(const Figure &f) override {
+        if (this == &f) return *this;
         const Rectangle &r = dynamic_cast<const Rectangle &>(f);
         A = r.A;
         B = r.B;
@@ -78,6 +81,8 @@ public:
     double perimetre() override {
         return 2 * (A + B);
     }
+
+    Rectangle &operator = (const Rectangle &c) = default;
 
 private:
     double A, B;
@@ -95,6 +100,7 @@ public:
     }
 
     Ellipse &operator=(const Figure &f) override {
+        if (this == &f) return *this;
         const Ellipse &e = dynamic_cast<const Ellipse &>(f);
         A = e.A;
         B = e.B;
@@ -109,6 +115,8 @@ public:
     double perimetre() override {
         return 4 * (M_PI*A*B + (A-B)*(A-B)) / (A+B);
     }
+
+    Ellipse &operator = (const Ellipse &c) = default;
 
 private:
     double A, B;
